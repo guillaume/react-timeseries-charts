@@ -119,6 +119,8 @@ export default class EventHandler extends React.Component {
     }
 
     handleMouseDown(e) {
+        document.addEventListener("mouseup", this.handleMouseUp);
+
         if (!this.props.enablePanZoom) {
             return;
         }
@@ -133,7 +135,6 @@ export default class EventHandler extends React.Component {
         const end = this.props.scale.domain()[1].getTime();
 
         document.addEventListener("mouseover", this.handleMouseMove);
-        document.addEventListener("mouseup", this.handleMouseUp);
 
         this.setState({
             isPanning: true,
@@ -146,6 +147,8 @@ export default class EventHandler extends React.Component {
     }
 
     handleMouseUp(e) {
+        document.removeEventListener("mouseup", this.handleMouseUp);
+
         if (!this.props.enablePanZoom) {
             return;
         }
@@ -153,7 +156,6 @@ export default class EventHandler extends React.Component {
         e.stopPropagation();
 
         document.removeEventListener("mouseover", this.handleMouseMove);
-        document.removeEventListener("mouseup", this.handleMouseUp);
 
         const x = e.pageX;
         if (
